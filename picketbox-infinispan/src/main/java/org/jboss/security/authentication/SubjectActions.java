@@ -30,6 +30,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.resource.spi.security.PasswordCredential;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginContext;
@@ -152,6 +153,13 @@ class SubjectActions
             {
                // Ignore non-cloneable issues 
             }
+         }
+         else if (this.deepCopy && obj instanceof PasswordCredential)
+         {
+            PasswordCredential credential = (PasswordCredential) obj;
+            PasswordCredential clonedCredential = new PasswordCredential(credential.getUserName(), credential.getPassword());
+            clonedCredential.setManagedConnectionFactory(credential.getManagedConnectionFactory());
+            clonedObject = clonedCredential;
          }
          if (clonedObject == null)
             clonedObject = obj;
